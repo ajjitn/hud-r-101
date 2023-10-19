@@ -151,18 +151,16 @@ Aesthetic mappings like x and y almost always vary with the data. Aesthetic mapp
 
 ## Exercise 7 (Mapping)
 
-<font color="#55b748">**Step 1:**</font> Read in UFO sighting data (source: National UFO Reporting Center), link: `https://raw.githubusercontent.com/UI-Research/urbn101-intro-r/master/homework/ufo_state.csv`
+<font color="#55b748">**Step 1:**</font> Read in Multifamily housing data fro HUD using this code:
 
-<font color="#55b748">**Step 1:**</font> Install urbnmapr `remotes::install_github("UrbanInstitute/urbnmapr")`, load the urbnmapr library, and update the urbnthemes style to map `set_urbn_defaults(style = "map")`.
+```{r, eval = F, echo = T}
+mf_properties = read_sf("https://services.arcgis.com/VTyQ9soqVukalItT/arcgis/rest/services/MULTIFAMILY_PROPERTIES_ASSISTED/FeatureServer/7/query?outFields=HH_INCOME,PCT_HISPANIC,PCT_BLACK&where=1%3D1&f=geojson", 
+                        quiet= TRUE)
 
-<font color="#55b748">**Step 2:**</font>: Pull a shapefile of US States using urbnmapr and join the UFO counts by state to the shapefile using the code below:
+```
 
-    states_sf <- get_urbn_map("states", sf = TRUE)
-
-    states_ufo <- states_sf %>% 
-      left_join(ufo, by=c("state_abbv"="state"))
-
-<font color="#55b748">**Step 3:**</font>: In ggplot, plot the states_ufo dataset, fill it in using the "count" column, add labels, change the outline (colour). Instead of using geom_point or geom_bar using geom_sf.
+<
+<font color="#55b748">**Step 3:**</font>: In ggplot, plot the mf_properties dataset, fill it in using the `PCT_HISPANIC` column, add labels, change the outline (`colour`). Instead of using geom_point or geom_bar using geom_sf.
 
 <font color="#ec008b"> Mapping Resources </font>
 

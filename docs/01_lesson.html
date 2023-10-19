@@ -355,14 +355,12 @@ set_urbn_defaults(style = "print")</code></pre>
 </section>
 <section id="exercise-7-mapping" class="level2" data-number="1.9">
 <h2 data-number="1.9" class="anchored" data-anchor-id="exercise-7-mapping"><span class="header-section-number">1.9</span> Exercise 7 (Mapping)</h2>
-<p><font color="#55b748"><strong>Step 1:</strong></font> Read in UFO sighting data (source: National UFO Reporting Center), link: <code>https://raw.githubusercontent.com/UI-Research/urbn101-intro-r/master/homework/ufo_state.csv</code></p>
-<p><font color="#55b748"><strong>Step 1:</strong></font> Install urbnmapr <code>remotes::install_github("UrbanInstitute/urbnmapr")</code>, load the urbnmapr library, and update the urbnthemes style to map <code>set_urbn_defaults(style = "map")</code>.</p>
-<p><font color="#55b748"><strong>Step 2:</strong></font>: Pull a shapefile of US States using urbnmapr and join the UFO counts by state to the shapefile using the code below:</p>
-<pre><code>states_sf &lt;- get_urbn_map("states", sf = TRUE)
-
-states_ufo &lt;- states_sf %&gt;% 
-  left_join(ufo, by=c("state_abbv"="state"))</code></pre>
-<p><font color="#55b748"><strong>Step 3:</strong></font>: In ggplot, plot the states_ufo dataset, fill it in using the “count” column, add labels, change the outline (colour). Instead of using geom_point or geom_bar using geom_sf.</p>
+<p><font color="#55b748"><strong>Step 1:</strong></font> Read in Multifamily housing data fro HUD using this code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mf_properties <span class="ot">=</span> <span class="fu">read_sf</span>(<span class="st">"https://services.arcgis.com/VTyQ9soqVukalItT/arcgis/rest/services/MULTIFAMILY_PROPERTIES_ASSISTED/FeatureServer/7/query?outFields=HH_INCOME,PCT_HISPANIC,PCT_BLACK&amp;where=1%3D1&amp;f=geojson"</span>, </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">quiet=</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>&lt; <font color="#55b748"><strong>Step 3:</strong></font>: In ggplot, plot the mf_properties dataset, fill it in using the <code>PCT_HISPANIC</code> column, add labels, change the outline (<code>colour</code>). Instead of using geom_point or geom_bar using geom_sf.</p>
 <p><font color="#ec008b"> Mapping Resources </font></p>
 <ul>
 <li><a href="https://medium.com/@urban_institute/how-to-create-state-and-county-maps-easily-in-r-577d29300bb2">How to Create State and County Maps Easily in R</a></li>
