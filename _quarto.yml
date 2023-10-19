@@ -4,7 +4,7 @@ project:
 
 book:
   title: "Intro to R"
-  author: "Amy Rogin and Aaron R. Williams"
+  author: "Urban R Users Group and Ajjit Narayanan"
   date: today
   chapters:
     - index.qmd
