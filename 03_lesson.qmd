@@ -1,0 +1,351 @@
+---
+title: "Data Munging 2"
+author: "R Users Group"
+date: today
+output:
+  html:
+    code-line-numbers: true
+    number-sections: true
+    number-depth: 2
+    embed-resources: true
+    code-fold: show
+    toc: true
+    css: style.scss
+editor_options: 
+  chunk_output_type: console
+---
+
+## Review
+
+-   `%>%`: The pipe operator
+-   `dplyr` verbs for data manipulation
+    -   `select()`
+    -   `filter()`
+    -   `rename()`
+    -   `arrange()`
+    -   `mutate()`
+    -   `summarize()`
+    -   `group_by()`
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+library(tidyverse)
+```
+
+## Motivation
+
+-   Review and master `library(dplyr)`
+-   Expand our skill set so we can do more types of analysis
+
+### `r kableExtra::text_spec("Exercise 0", color = "#1696d2")`
+
+<font color="#55b748">**Step 1:**</font> Open up your `.Rproj` for `urbn101`. You should now see `urbn101` in the top right of RStudio instead of "Project: (None)" .
+
+<font color="#55b748">**Step 2:**</font> Install the R package `nycflights13`.
+
+<font color="#55b748">**Step 3:**</font> Load `tidyverse` and `nycflights13` at the top of your script.
+
+<font color="#55b748">**Step 4:**</font> Run `data(flights)` in the console to load the flights data set into your R environment. Also run `data(planes)` to load the planes data set.
+
+<font color="#55b748">**Step 5:**</font> Look at the `flights` data set (how many ways can you do this?)
+
+## Conditional transformation
+
+Last week, we showed how `mutate()` can be used to create new variables or to transform new variables. We also learned about `if_else()`m which works great for one condition. 
+
+But what if you have multiple conditions? `case_when()` allows for a sequence of conditional logic that can be used to transform or create variables with `mutate()`. For example, here I create a variable called `lateness` that creates a character variable with the levels `"very late"`, `"late"`, and `"on time"`. The logic is evaluated from top to bottom and `TRUE` is used to refer to all other remaining cases.
+
+The syntax may look a little weird at first but it's easy to pick up! The logical condition goes to the left of `~` and the output results goes to the right. `&` and `|` can be used to combine logical statements.
+
+```{r eval = FALSE}
+flights %>%
+  mutate(
+    lateness = case_when(
+      arr_delay > 30 ~ "very late",
+      arr_delay > 0 ~ "late",
+      TRUE          ~ "on time"
+    )
+  )
+
+```
+
+### `r kableExtra::text_spec("Exercise 1", color = "#1696d2")`
+
+::: {.panel-tabset}
+
+#### Prompt
+
+1. Look at the `planes` data. We want to create a categorical variables called `plane_type` using the following rules for the variable `seats`:
+  * "personal" if the plane has 4 or fewer seats
+  * "commercial" if the plane has 5 to 199 seats
+  * "jumbo if the plane has more than 200 seats
+2. Use `mutate()` and `case_when()` to create `seats`.
+3. Pipe into `count(plane_tyepe)`.
+
+#### Solution
+
+```{r}
+#| message: false
+
+library(tidyverse)
+library(nycflights13)
+
+planes %>%
+  mutate(
+    plane_type = case_when(
+      seats <= 4   ~ "personal",
+      seats <= 199 ~ "commercial",
+      TRUE         ~ "jumbo"
+    )
+  ) %>%
+  count(plane_type)
+
+```
+
+:::
+
+## Strings
+
+`library(stringr)` contains powerful and concise functions manipulating character variables. Reference the [cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/strings.pdf) for an overview of the different string maniuplation functions.
+
+### `r kableExtra::text_spec("Exercise 2", color = "#1696d2")`
+
+The `month` and `day` columns in `flights` are currently integer variables. We want to turn them into character variables with leading zeros. For example, `1` should be `"01"`.
+
+::: {.panel-tabset}
+
+#### Prompt
+
+<font color="#55b748">**Step 1:**</font> Use `mutate()` to overwrite `month` and `day` with `str_pad()`. The first argument should be `month` or `day`. The second argument, `width`, should be `2`.
+
+<font color="#55b748">**Step 2:**</font> The padding character is currently a space, but we want it to be `"0"`. Use `?str_pad` to figure out how to switch the padding character.
+
+<font color="#55b748">**Step 3:**</font> Pipe the result into the following line `mutate(flight_date = paste(year, month, day, sep = "-"))`
+
+<font color="#55b748">**Step 4:**</font> Drop all variables except `flight_date`, `distance`, and `air_time`.
+
+<font color="#55b748">**Step 5:**</font> Assign the result to `flights_subset`.
+
+#### Solution
+
+```{r}
+flights_subset <- flights %>%
+  mutate(
+    month = str_pad(month, width = 2, side = "left", pad = "0"),
+    day = str_pad(day, width = 2, side = "left", pad = "0")
+  ) %>%
+  mutate(flight_date = paste(year, month, day, sep = "-")) %>%
+  select(flight_date, distance, air_time)
+
+```
+
+:::
+
+## Dates
+
+`library(lubridate)` contains powerful and concise functions for creating and manipulating dates, times, and date-times. It is aware of leap days and leap seconds and is useful for calculating periods, durations, intervals, and more.
+
+### `r kableExtra::text_spec("Exercise 3", color = "#1696d2")`
+
+::: {.panel-tabset}
+
+#### Prompt
+
+<font color="#55b748">**Step 1:**</font> Add `library(lubridate)` after `library(nycflight13)` in your script.
+
+<font color="#55b748">**Step 2:**</font> `library(lubridate)` is powerful but it needs variables in the correct format. Use `ymd()` inside of `mutate()` to turn the `flight_date` variable into a date rather than a character vector.
+
+<font color="#55b748">**Step 3:**</font> Inside the previous `mutate` statement, add another column called `weekday` for the weekday of the flight. You can use `wday(flight_date)` to find the day of the week for each date.
+
+<font color="#55b748">**Step 4:**</font> Assign the result to `flights_subset`.
+
+<font color="#55b748">**Step 5:**</font> Use `count()` to count the number of flights by day of the week.
+
+#### Solution
+
+```{r}
+library(lubridate)
+
+flights_subset <- flights_subset %>%
+  mutate(flight_date = ymd(flight_date)) %>%
+  mutate(weekday = wday(flight_date, label = TRUE)) 
+
+flights_subset %>%
+  count(weekday)
+
+```
+
+:::
+
+## `group_by` and `summarize()`
+
+### `r kableExtra::text_spec("Exercise 4", color = "#1696d2")`
+
+We are going to summarize `flights_subset` from the previous example by `weekday`.
+
+::: {.panel-tabset}
+
+#### Prompt
+
+<font color="#55b748">**Step 1:**</font> `group_by()` `weekday` and use `n()` in `summarize()` to count the number of observations. This should match Step 5 from the previous exercise.
+
+<font color="#55b748">**Step 2:**</font> In the same `summarize()`, calculate `mean()`, and `max()` `distance`.
+
+<font color="#55b748">**Step 3:**</font> In the same `summarize()`, calculate median `air_time`.
+
+<font color="#55b748">**Step 4:**</font> Rename the resulting variables *inside* `summarize()` so they have more useful names.
+
+#### Solution
+
+```{r}
+flights_subset %>%
+  group_by(weekday) %>%
+  summarize(
+    n(),
+    mean_distance = mean(distance),
+    max_distance = max(distance),
+    median_air_time = median(air_time, na.rm = TRUE)
+  )
+
+```
+
+:::
+
+## `left_join()`
+
+Joins are the main method for combining two datasets with a commmon key column together. There are many types of joins, and we highly recommend you read this [chapter on joins in R4DS](https://r4ds.had.co.nz/relational-data.html) if you want more info. Below is a quick visual summary of the types of joins you can perform in R. ![join_types](www/images/join_types.png){width="60%"}
+
+For now we will focus on the "left" join, which merges observations from the right data set to the left data set. This is the join type I use 90% of the time in R. Below is an example of how the `left_join()` function works.
+
+```{r}
+people <- tribble(
+  ~name, ~team, 
+  "Aaron", "Pacers",
+  "Kyle", "Wizards",
+  "Ajjit", "Warriors",
+  "Fay", "Wizards"
+)
+
+team_locations <- tribble(
+  ~team, ~city,
+  "Warriors", "Oakland",
+  "Pacers", "Indianoplis",
+  "Wizards", "Washington DC"
+)
+
+left_join(
+  x = people,
+  y = team_locations, 
+  by = "team"
+)
+
+```
+
+### `r kableExtra::text_spec("Exercise 5", color = "#1696d2")`
+
+`flights` contains information about flights and the unit of observation is airplane flights. `planes` contains information about the airplanes and the unit of observation is the airplane. The common column between these tables is the `tailnum` column.
+
+We want to add information about planes to the flights data set. This is a left join because for every flight in the dataset, we want to append flight information. This is also called a many-to-one join because we are joining many rows from the `flights` data to one row from the `planes` data.
+
+::: {.panel-tabset}
+
+#### Prompt
+
+<font color="#55b748">**Step 1:**</font> Use `left_join()` to join `planes` to `flights`. The common key is `tailnum`.
+
+<font color="#55b748">**Step 2:**</font> Use `anti_join()` to see observations from `flights` that don't have a match in `planes` and call the output object `unmatched_flights`. The common key is `tailnum`.
+
+<font color="#55b748">**Step 2:**</font> Use `slice()` and `pull()` to extract the `tailnum` value in the first row of `unmatched_flights`. Call this variable `first_unmatched_tailnum`
+
+<font color="#55b748">**Step 3:**</font> Use `filter()` to see if `first_unmatched_tailnum` is in `planes`. Hint: it shouldn't be!
+
+#### Solution
+
+```{r}
+left_join(
+  x = flights,
+  y = planes,
+  by = "tailnum"
+)
+
+first_unmatched_tailnum <- anti_join(
+  x = flights,
+  y = planes,
+  by = "tailnum"
+) %>%
+  slice(1) %>%
+  pull(tailnum)
+
+planes %>%
+  filter(tailnum == first_unmatched_tailnum)
+
+```
+
+:::
+
+## Custom functions
+
+Sometimes functions don't exist for desired calculations or we want to combine many calculations into one function to reduce copying-and-pasting.
+
+"You should consider writing a function whenever you've copied and pasted a block of code more than twice (i.e. you now have three copies of the same code)." \~ [R4DS](https://r4ds.had.co.nz/functions.html#when-should-you-write-a-function)
+
+R has a flexible function system that makes it very easy to define custom functions!
+
+```{r}
+#| eval: false
+function_name <- function(arg1, arg2 = default) {
+
+  # function body
+
+}
+
+```
+
+Three ingredients
+
+-   Function name - usually verbs
+-   Function arguments - inputs to the function (optional)
+-   Function body
+
+```{r}
+square <- function(x = 2) {
+  x ^ 2
+}
+
+square()
+
+square(x = 4)
+```
+
+**Note:** Using tidyverse functions inside of custom functions often requires non-standard evaluation. Please reach out for help when this is your goal.
+
+### `r kableExtra::text_spec("Exercise 6", color = "#1696d2")`
+
+::: {.panel-tabset}
+
+#### Prompt
+
+<font color="#55b748">**Step 1:**</font> Write a function called `multiply_xy()` that takes arguments `x` and `y` and multiplies them together.
+
+<font color="#55b748">**Step 2:**</font> Add your favorite number as the default for `x` and your least favorite number as the default for `y`.
+
+<font color="#55b748">**Step 3:**</font> Call the function and overwrite the default for `y` with your favorite number.
+
+#### Solution
+
+```{r}
+multiply_xy <- function(x = 3.14, y = 7) {
+  
+  x * y
+  
+}
+
+multiply_xy(y = 3.14) 
+
+```
+
+:::
+
+## Resources
+
+-   [R4DS: functions](https://r4ds.had.co.nz/functions.html)
+-   `stringr` [cheat sheet](https://github.com/rstudio/cheatsheets/raw/master/strings.pdf)
