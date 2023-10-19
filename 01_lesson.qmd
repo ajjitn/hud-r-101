@@ -57,19 +57,18 @@ output:
 <font color="#55b748">**Step 1:**</font> Submit `head(airquality)` to the console. We will use the airquality dataset in this exericise
 
 <font color="#55b748">**Step 2:**</font> Type the following in your script and run the code:
-```{r}
+```{r, eval = F, echo =T}
 ggplot(data=airquality)
 ```
 
 Then add the following to your code and run it again. What's different? 
-```{r}
+```{r, eval = F, echo =T}
 ggplot(data=airquality, 
         mapping = aes(x = Temp, y = Ozone))
 ```
 
 Then add the following and run again:
-```{r}
-
+```{r, eval = F, echo =T}
 ggplot(data=airquality, 
         mapping = aes(x = Temp, y = Ozone)) +
         geom_point()
@@ -138,7 +137,7 @@ Aesthetic mappings like x and y almost always vary with the data. Aesthetic mapp
 
 <font color="#55b748">**Step 1:**</font> Read in Zillow Observed Rent Index (ZORI) data using `read_csv('https://raw.githubusercontent.com/UI-Research/urbn101-intro-r/master/homework/zillow_clean.csv')`
 
-<font color="#55b748">**Step 2:**</font> Clean the zillow data to just the most expensive ciites using code below:
+<font color="#55b748">**Step 2:**</font> Clean the zillow data to just the most expensive cites using code below:
 
     zillow_clean <- zillow %>%
       arrange(desc(Avg_price)) %>%

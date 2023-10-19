@@ -1,7 +1,6 @@
 project:
   type: book
-  output-dir: ../docs
-
+  output-dir: docs/
 book:
   title: "Intro to R"
   author: "Urban R Users Group and Ajjit Narayanan"
