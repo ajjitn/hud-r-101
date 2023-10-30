@@ -4,14 +4,14 @@
     "href": "index.html",
     "title": "Intro to R",
     "section": "",
-    "text": "Intro to R: A Hands on Tutorial\nThis book contains the materials for Intro to R: A hands-on tutorial, a multi-class R training hosted by the Urban Institute R Users Group.\nCore lessons include:"
+    "text": "Intro to R: A Hands on Tutorial\nThis book contains the materials for Intro to R: A hands-on tutorial, a multi-class R training initially createdd by the Urban Institute R Users Group and now presented to HUD staff by Ajjit Narayanan\nCore lessons include:"
   },
   {
-    "objectID": "index.html#instructors-across-all-years",
-    "href": "index.html#instructors-across-all-years",
+    "objectID": "index.html#recordings",
+    "href": "index.html#recordings",
     "title": "Intro to R",
-    "section": "Instructors (across all years)",
-    "text": "Instructors (across all years)\n\nAaron R. Williams (IBP/TECH)\nAmy Rogin (MET)\nAjjit Narayanan (TECH)\nFay Walker (MET)\nSarah Strochak (HFPC)\nKyle Ueyama (TECH)\nOlivia Fiol (MET)\n\n\nQuestions?\nContact Amy Rogin (arogin@urban.org) or Aaron Williams (awilliams@urban.org)"
+    "section": "Recordings",
+    "text": "Recordings\nSome of the initial sessions had issues with recordings. So the linked recordings may be from an earlier year of the course but with pretty much the same content.\n\n\n\nLesson\nRecording Link\n\n\n\n\nDay 0: Why Statistical Programming?\nLink\n\n\nDay 1: Data Visualization\nLink\n\n\nDay 2: Data Munging I\nLink\n\n\nDay 3: Data Munging II\nLink\n\n\nDay 4: Getting Data into and out of R\nLink\n\n\nDay 5: Iteration\nLink\n\n\nDay 6: Putting everything together\nLink\n\n\n\n\nQuestions?\nContact Ajjit Narayanan on Teams"
   },
   {
     "objectID": "01_lesson.html#review",
