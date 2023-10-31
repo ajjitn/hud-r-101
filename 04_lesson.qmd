@@ -68,7 +68,7 @@ One note - while all three packages are installed with the `tidyverse`, only `re
 
 ## Primary Functions
 
-In general, `readr`, `readxl`, and `haven` will come with some variant of a `read` function for data import, and a variant of `write` (except for Excel and SAS!) for data export.
+In general, `readr`, `readxl`, and `haven` will come with some variant of a `read_*` function for data import, and a variant of `write_*` (except for Excel and SAS!) for data export.
 
 -   `readr::read_csv()`, `readr::write_csv()`
 -   `readr::read_delim()`, `readr::write_delim()`
@@ -172,7 +172,7 @@ Similarly, the `write_delim()` function can be used to write out a plain text fi
 
 #### Exercise
 
-<font color="#55b748">**Step 1:**</font> Use `write_delim()` to write out `ncvhis` to a pipe `|` separated file.
+<font color="#55b748">**Step 1:**</font> Use `write_csv()` to write out `ncvhis` to a comma separated file (csv).
 
 ### Common Issues
 
@@ -204,7 +204,7 @@ challenge <- read_csv(readr_example("challenge.csv"),
 You will run into other problems when importing data like:
 
 -   the columns not being in the first row
--   weird NA values
+-   weird NA values (like `N/A` or `-100`)
 -   blank rows at the top of files
 
 Luckily `read_csv()` and its friends have a lot of built in arguments to help deal with those issues. Look at the arguments in the docs using `?read_csv` or go to the R4DS data import [page](https://r4ds.had.co.nz/data-import.html#getting-started) for examples of how to deal with all the above problems.
@@ -239,7 +239,7 @@ We can then use the `read_excel` function to load our data into our R session. A
 purchases <- read_excel("data/sfsnap.xlsx", sheet = "Purchase Data April 2019")
 ```
 
-Note that the `readxl` package only provides functionality to, as the name implies, read Excel files. If you need to write your data out to `.xls` or `.xlsx` formats - [don't](https://www.moderncsv.com/why-excel-sucks-and-modern-csv-is-awesome-at-least-for-csvs/)! We highly recommend saving data files as `.csv` files wherever possible. But if you you really need to, look into the `writexl` or `openxlsx` packages.
+Note that the `readxl` package only provides functionality to, as the name implies, read Excel files. If you need to write your data out to `.xls` or `.xlsx` formats - [don't](https://www.moderncsv.com/why-excel-sucks-and-modern-csv-is-awesome-at-least-for-csvs/)! We highly recommend saving small-medium sized data files as `.csv` files and larger files (over 2 GB) as parquet files. But if you you really need to, look into the `writexl` or `openxlsx` packages.
 
 ### Exercise
 
@@ -275,7 +275,7 @@ gss <- read_dta("data/gss.zip")
 
 ### SAS Data (.sas7bdat)
 
-We use `read_sas` to read in SAS files. This works mostly identical to `read_stata`, and you can read in `.sas7bdat` + `.sas7bcat`, or zipped folders with sas files. Note that while the `write_sas()` function exists, it doesn't appear to actually work at the current version of `haven`.
+We use `read_sas` to read in SAS files. This works mostly identical to `read_stata`, and you can read in `.sas7bdat` + `.sas7bcat`, or zipped folders with sas files. Note that while the `write_sas()` function exists, it doesn't work and will be removed soon.
 
 #### Example
 
@@ -297,7 +297,9 @@ pums_data %>% write_dta("modified/pums_wy.dta")
 
 ## The `arrow` Package
 
-Sometimes when you save text files, the column types (ie numeric, date, time, text, etc.) get lost and won't be read back in upon reimporting In this case you may want to save your files as a binary file. One binary file format we suggest is `.feather` files, which you can [read more about](https://arrow.apache.org/docs/python/feather.html). The main benefits of storing data in a binary format is:
+Sometimes when you save text files, the column types (ie numeric, date, time, text, etc.) get lost and won't be read back in upon reimporting. Or you have. a really large dataset (>2 GB) which can take forever to read in and write out of R.
+
+In these cases you may want to save your files as a binary file. One binary file format we suggest is `.feather` files, which you can [read more about](https://arrow.apache.org/docs/python/feather.html). The main benefits of storing data in a binary format is:
 
 -   Column types will be recorded and preserved
 -   Importing and exporting will be faster than other methods
@@ -319,6 +321,8 @@ write_feather(ipeds_2011, "modified/colleges_ipeds_completers_2011.feather")
 # Read in a feather file
 ipeds_2011 = read_feather("modified/colleges_ipeds_completers_2011.feather")
 ```
+
+If you have really large data (>5 GB), you may alwo want to consider `.parquet` files which are another binary file format with even more compression and space savings.
 
 ## Resources
 
