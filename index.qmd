@@ -1,6 +1,6 @@
 # Intro to R: A Hands on Tutorial {.unnumbered}
 
-This book contains the materials for *Intro to R: A hands-on tutorial*, a multi-class R training initially createdd by the [Urban Institute R Users Group](https://urbaninstitute.github.io/r-at-urban/) and now presented to HUD staff by Ajjit Narayanan
+This book contains the materials for *Intro to R: A hands-on tutorial*, a multi-class R training initially created by the [Urban Institute R Users Group](https://urbaninstitute.github.io/r-at-urban/) and now presented to HUD staff by Ajjit Narayanan
 
 Core lessons include:
 

@@ -106,7 +106,6 @@ download_data <- function(url, path) {
 }
 ```
 
-
 ## The `readr` Package
 
 `readr` provides functions to read plain text rectangular data - think csv, txt or tsv files.
@@ -213,7 +212,6 @@ Luckily `read_csv()` and its friends have a lot of built in arguments to help de
 
 <font color="#55b748">**Step 1:**</font> Pull up the documentation for `read_csv` and take a look of some of the function arguments. There are a lot! You don't need to know how everything works, but it's good to have an idea of some of the options available to you.
 
-
 ## The `readxl` Package
 
 For data that is saved as `.xls` or `.xlsx`, use the `readxl` package.
@@ -244,7 +242,6 @@ Note that the `readxl` package only provides functionality to, as the name impli
 ### Exercise
 
 <font color="#55b748">**Step 1:**</font> Use `read_excel()` to load in the table on the "Refinance Data April 2019" sheet into a data frame called `refinances`.
-
 
 ## The `haven` Package
 
@@ -297,7 +294,7 @@ pums_data %>% write_dta("modified/pums_wy.dta")
 
 ## The `arrow` Package
 
-Sometimes when you save text files, the column types (ie numeric, date, time, text, etc.) get lost and won't be read back in upon reimporting. Or you have. a really large dataset (>2 GB) which can take forever to read in and write out of R.
+Sometimes when you save text files, the column types (ie numeric, date, time, text, etc.) get lost and won't be read back in upon reimporting. Or you have. a really large dataset (\>2 GB) which can take forever to read in and write out of R.
 
 In these cases you may want to save your files as a binary file. One binary file format we suggest is `.feather` files, which you can [read more about](https://arrow.apache.org/docs/python/feather.html). The main benefits of storing data in a binary format is:
 
@@ -322,7 +319,7 @@ write_feather(ipeds_2011, "modified/colleges_ipeds_completers_2011.feather")
 ipeds_2011 = read_feather("modified/colleges_ipeds_completers_2011.feather")
 ```
 
-If you have really large data (>5 GB), you may alwo want to consider `.parquet` files which are another binary file format with even more compression and space savings.
+If you have really large data (\>5 GB), you may alwo want to consider `.parquet` files which are another binary file format with even more compression and space savings.
 
 ## Resources
 
